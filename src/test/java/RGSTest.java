@@ -55,7 +55,7 @@ public class RGSTest extends BaseTest {
     @FindBy(name = "Comment")
     WebElement inputComment;
 
-    @FindBy(className = "checkbox")
+    @FindBy(xpath = ".//input[@class = 'checkbox']")
     WebElement checkbox;
 
     @FindBy(id = "button-m")
@@ -155,6 +155,8 @@ public class RGSTest extends BaseTest {
                 parseToMaskDate("22052018"), inputContactDate.getAttribute("value"));
         Assert.assertEquals("Отображаемый комментарий не равен введенному",
                 "testtesttest", inputComment.getAttribute("value"));
+
+        Assert.assertTrue("Чекбокс не нажат", checkbox.isSelected());
 
         waitVisibility(send);
         send.click();
