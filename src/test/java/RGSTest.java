@@ -11,6 +11,8 @@ public class RGSTest extends BaseTest {
         Generate.generatePool();
     }
 
+
+    /* Элементы страницы, нужные для теста */
     @FindBy(xpath = ".//a[contains(text(),'Страхование')]")
     WebElement insuranceOptions;
 
@@ -63,6 +65,7 @@ public class RGSTest extends BaseTest {
     WebElement errorMessageEmail;
 
 
+    // Генерация строки - номера телефона, соответствующей маске на странице
     public String parseToMaskPhone(String phone) {
         String maskPhone = "+7 (";
 
@@ -77,6 +80,7 @@ public class RGSTest extends BaseTest {
         return maskPhone;
     }
 
+    // Генерация строки - предпочитаемой даты контакта, соответствующей маске на странице
     public String parseToMaskDate(String date) {
         String maskDate = "";
 
@@ -89,6 +93,7 @@ public class RGSTest extends BaseTest {
         return maskDate;
     }
 
+    // Заполнение полей формы отправки заявки на полис ДМС
     public void fillFields(Person person, String contactDate, String comment) {
         inputLastName.sendKeys(person.getLastName());
         inputFirstName.sendKeys(person.getFirstName());
