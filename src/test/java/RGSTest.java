@@ -112,32 +112,37 @@ public class RGSTest extends BaseTest {
         checkbox.click();
     }
 
-    @Test
-    public void rgsTest () {
-        PageFactory.initElements(driver, this);
-
+    public void goToDMSPage() {
         waitVisibility(insuranceOptions);
         insuranceOptions.click();
 
         waitVisibility(dms);
         dms.click();
+    }
 
+    public void checkDMSPage() {
         waitVisibility(header);
         Assert.assertTrue("На странице нет заголовка с текстом \"Добровольное медицинское страхование\"",
                 header.getText().contains("Добровольное медицинское страхование"));
+    }
 
+    public void goToRequestForm() {
         waitVisibility(sendRequest);
         sendRequest.click();
+    }
 
+    public void checkRequestForm() {
         waitVisibility(formHeader);
         Assert.assertTrue("На странице нет заголовка с текстом \"Заявка на добровольное медицинское страхование\"",
                 formHeader.getText().contains("Заявка на добровольное медицинское страхование"));
+    }
 
-        Person person = new Person(Generate.generateLastName(), Generate.generateFirstName(),
-                Generate.generateMiddleName(), Generate.generatePhone(), "qwertyqwerty");
+    public void sendFilledRequest() {
+        waitVisibility(send);
+        send.click();
+    }
 
-        fillFields(person, "22052018", "testtesttest");
-
+    public void checkFields(Person person, String contactDate, String comment) {
         Assert.assertEquals("Отображаемая фамилия не равна введенной",
                 person.getLastName(), inputLastName.getAttribute("value"));
         Assert.assertEquals("Отображаемое имя не равно введенному",
@@ -152,16 +157,34 @@ public class RGSTest extends BaseTest {
         Assert.assertEquals("Отображаемый регион не равен введенному",
                 "77", inputRegion.getAttribute("value"));
         Assert.assertEquals("Отображаемая дата не равна введенной",
-                parseToMaskDate("22052018"), inputContactDate.getAttribute("value"));
+                parseToMaskDate(contactDate), inputContactDate.getAttribute("value"));
         Assert.assertEquals("Отображаемый комментарий не равен введенному",
-                "testtesttest", inputComment.getAttribute("value"));
+                comment, inputComment.getAttribute("value"));
 
         Assert.assertTrue("Чекбокс не нажат", checkbox.isSelected());
+    }
 
-        waitVisibility(send);
-        send.click();
-
+    public void checkErrorEmail() {
         waitVisibility(errorMessageEmail);
         Assert.assertTrue("Нет сообщения об ошибке ввода электронной почты", errorMessageEmail.isDisplayed());
+    }
+
+    @Test
+    public void rgsTest () {
+        PageFactory.initElements(driver, this);
+
+        goToDMSPage();
+        checkDMSPage();
+
+        goToRequestForm();
+        checkRequestForm();
+
+        Person person = Generate.generatePerson("qwertyqwerty");
+
+        fillFields(person, "22052018", "testtesttest");
+        checkFields(person, "22052018", "testtesttest");
+
+        sendFilledRequest();
+        checkErrorEmail();
     }
 }

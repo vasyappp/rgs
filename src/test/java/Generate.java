@@ -76,4 +76,9 @@ public class Generate {
 
         return date;
     }
+
+    public static Person generatePerson(String email) {
+        return new Person(Generate.generateLastName(), Generate.generateFirstName(),
+                Generate.generateMiddleName(), Generate.generatePhone(), email);
+    }
 }
